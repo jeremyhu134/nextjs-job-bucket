@@ -1,10 +1,10 @@
-import { NextResponse } from "next/server";
 import clientPromise from "../../../lib/mongodb"; // adjust if path differs
 import { ObjectId } from "mongodb";
 import { auth } from "../../../lib/auth";
+import { NextResponse, NextRequest } from "next/server";
 
 export async function DELETE(
-  req: Request,
+  req: NextRequest,
   context: { params: { id: string } }
 ) {
   try {
