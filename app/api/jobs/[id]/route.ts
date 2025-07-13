@@ -3,9 +3,12 @@ import { ObjectId } from "mongodb";
 import { auth } from "../../../lib/auth";
 import { NextResponse, NextRequest } from "next/server";
 
+
+type RouteParams = { id: string }; // Rename to avoid conflict if you had a separate 'Params' type in your project
+
 export async function DELETE(
-  req: NextRequest,
-  context: { params: { id: string } }
+  req: Request,
+  { params }: { params: RouteParams } // This is correct, params is already destructured
 ) {
   try {
     const session = await auth();
@@ -13,7 +16,7 @@ export async function DELETE(
       return NextResponse.json({ error: "Not authenticated" }, { status: 401 });
     }
 
-    const jobId = context.params.id;
+    const { id: jobId } = params; // Correctly access the id from the destructured params object
 
     if (!ObjectId.isValid(jobId)) {
       return NextResponse.json({ error: "Invalid job ID" }, { status: 400 });
