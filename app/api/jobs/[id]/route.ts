@@ -6,7 +6,7 @@ import { NextResponse, NextRequest } from "next/server";
 
 export async function DELETE(
   req: Request,
-  { params }: { params: { id: string } } 
+  { params }: { params: Promise<{ id: string }> } 
 ) {
     try {
         const session = await auth();
@@ -14,7 +14,7 @@ export async function DELETE(
             return NextResponse.json({ error: "Not authenticated" }, { status: 401 });
         }
 
-        const { id: jobId } = params; // Correctly access the id from the destructured params object
+        const { id: jobId } = await params; // Correctly access the id from the destructured params object
 
         if (!ObjectId.isValid(jobId)) {
             return NextResponse.json({ error: "Invalid job ID" }, { status: 400 });
